@@ -8,20 +8,21 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
-@Controller
+//@Controller
 public class ThymeleafController {
 
-    PasswordEncoder encoder;
+//    PasswordEncoder encoder;
+//
+//
+//    @GetMapping("/register")
+//    public String register(Model model){
+//        model.addAttribute("user", new UserDTO());
+//        return "register";
+//    }
+//
+//    @GetMapping("/login")
+//    public String login() {
+//        return "login";
+//    }
 
-
-    @GetMapping("/register")
-    public String register(Model model){
-        model.addAttribute("user", new UserDTO());
-        return "register";
-    }
-
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
 }

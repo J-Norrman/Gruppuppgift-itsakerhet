@@ -1,14 +1,14 @@
-package web;
-import model.AppUser;
+package com.joel.gruppuppgiftitsakerhet.web;
+import com.joel.gruppuppgiftitsakerhet.model.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import service.AppUserService;
+import com.joel.gruppuppgiftitsakerhet.service.AppUserService;
 
 import java.util.List;
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/")
 public class AppController {
 
     @Autowired
@@ -28,14 +28,14 @@ public class AppController {
     @GetMapping("/register")
     public String showCreateForm(Model model) {
         model.addAttribute("user", new AppUser());
-        return "user-form";
+        return "register";
     }
 
-    @PostMapping
-    public String createUser(@ModelAttribute("user") AppUser user) {
-        appUserService.saveUser(user);
-        return "redirect:/users";
-    }
+//    @PostMapping
+//    public String createUser(@ModelAttribute("user") AppUser user) {
+//        appUserService.saveUser(user);
+//        return "redirect:/users";
+//    }
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {

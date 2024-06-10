@@ -1,10 +1,10 @@
-package service;
+package com.joel.gruppuppgiftitsakerhet.service;
 
-import model.AppUser;
+import com.joel.gruppuppgiftitsakerhet.model.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import repository.UserRepository;
+import com.joel.gruppuppgiftitsakerhet.repository.UserRepository;
 
 import java.util.List;
 

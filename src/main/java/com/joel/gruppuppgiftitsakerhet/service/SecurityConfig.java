@@ -1,4 +1,4 @@
-package com.joel.gruppuppgiftitsakerhet;
+package com.joel.gruppuppgiftitsakerhet.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
 @Configuration
-public class MyConfig {
+public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -24,23 +24,22 @@ public class MyConfig {
     }
 
 
-//    private static final Logger logger = LoggerFactory.getLogger(MyConfig.class);
-//
-//    public MyConfig() {
-//        logger.info("Custom Security Configuration loaded.");
-//    }
+    private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+
+    public SecurityConfig() {
+        logger.info("Custom Security Configuration loaded.");
+    }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login", "/user-list").permitAll()
-                        .requestMatchers("/register").hasRole("ADMIN")
-                        .anyRequest().authenticated());
-
-                http.formLogin(formLogin -> formLogin
+                        .requestMatchers("/login", "/register").permitAll()
+                        //.requestMatchers("/register").hasRole("ADMIN")
+                        .anyRequest().authenticated()
+                )
+                .formLogin(formLogin -> formLogin
                         .loginPage("/login")
-                                .defaultSuccessUrl("/user-list")
-                                .failureUrl("/login?error=true")
+                        .defaultSuccessUrl("/users")
                         .permitAll()
                 )
                 .logout(LogoutConfigurer::permitAll

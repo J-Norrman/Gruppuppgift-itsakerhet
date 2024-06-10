@@ -1,12 +1,12 @@
-package util;
+package com.joel.gruppuppgiftitsakerhet.util;
 
-import model.AppUser;
+import com.joel.gruppuppgiftitsakerhet.model.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import repository.UserRepository;
+import com.joel.gruppuppgiftitsakerhet.repository.UserRepository;
 
 @Configuration
 public class DataInitializer {

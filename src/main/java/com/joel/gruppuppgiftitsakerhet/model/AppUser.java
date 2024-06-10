@@ -1,4 +1,4 @@
-package model;
+package com.joel.gruppuppgiftitsakerhet.model;
 
 import jakarta.persistence.*;
 
@@ -14,11 +14,14 @@ public class AppUser implements Serializable {
     private String email;
     @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
+    private String role;
 
-    public AppUser(Long id, String email, String password) {
+    public AppUser(Long id, String email, String password, String role) {
         this.id = id;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
     public AppUser() {
@@ -47,5 +50,13 @@ public class AppUser implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

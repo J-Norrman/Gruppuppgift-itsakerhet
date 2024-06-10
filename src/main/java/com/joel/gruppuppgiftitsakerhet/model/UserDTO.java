@@ -1,4 +1,4 @@
-package model;
+package com.joel.gruppuppgiftitsakerhet.model;
 
 public class UserDTO {
     private String email;

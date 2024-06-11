@@ -31,11 +31,11 @@ public class AppController {
         return "register";
     }
 
-//    @PostMapping
-//    public String createUser(@ModelAttribute("user") AppUser user) {
-//        appUserService.saveUser(user);
-//        return "redirect:/users";
-//    }
+    @PostMapping
+    public String createUser(@ModelAttribute("user") AppUser user) {
+        appUserService.saveUser(user);
+        return "redirect:/users";
+    }
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {

@@ -12,15 +12,18 @@ import java.util.List;
 public class AppUserService {
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
 
     public AppUser saveUser(AppUser user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
     public List<AppUser> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public AppUser getUserByEmail(String email) {
+        return userRepository.findByemail(email);
     }
 
     public AppUser getUserById(Long id) {

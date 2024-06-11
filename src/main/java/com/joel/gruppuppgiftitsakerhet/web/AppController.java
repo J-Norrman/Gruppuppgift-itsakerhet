@@ -1,6 +1,7 @@
 package com.joel.gruppuppgiftitsakerhet.web;
 import com.joel.gruppuppgiftitsakerhet.model.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +15,16 @@ public class AppController {
     @Autowired
     private AppUserService appUserService;
 
-    @GetMapping
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @GetMapping("/users")
     public String getAllUsers(Model model) {
         List<AppUser> users = appUserService.getAllUsers();
         model.addAttribute("users", users);
-        return "user-list";
+        return "users";
     }
+
     @GetMapping("/login")
     public String login() {
         return "login";
@@ -31,8 +36,9 @@ public class AppController {
         return "register";
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public String createUser(@ModelAttribute("user") AppUser user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         appUserService.saveUser(user);
         return "redirect:/users";
     }
@@ -44,9 +50,10 @@ public class AppController {
         return "user-form";
     }
 
-    @PostMapping("/{id}")
+    @PostMapping("/update/{id}")
     public String updateUser(@PathVariable Long id, @ModelAttribute("user") AppUser user) {
         user.setId(id);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         appUserService.saveUser(user);
         return "redirect:/users";
     }
@@ -56,4 +63,5 @@ public class AppController {
         appUserService.deleteUser(id);
         return "redirect:/users";
     }
+
 }

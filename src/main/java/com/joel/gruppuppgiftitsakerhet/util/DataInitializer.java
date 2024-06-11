@@ -21,7 +21,7 @@ public class DataInitializer {
 
     @PostConstruct
     public void initDatabase() {
-        userRepository.save(new AppUser(null, "user@example.com", passwordEncoder.encode("password"), "USER"));
-        userRepository.save(new AppUser(null, "admin@example.com", passwordEncoder.encode("password"), "ADMIN"));
+        userRepository.save(new AppUser(null, "user@example.com", passwordEncoder.encode("password"), "USER","firstname","lastname","30"));
+        userRepository.save(new AppUser(null, "admin@example.com", passwordEncoder.encode("password"), "ADMIN","firstname","lastname","30"));
     }
 }

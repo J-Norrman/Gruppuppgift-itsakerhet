@@ -5,6 +5,13 @@
 </head>
 <body>
 <h1>User List</h1>
+<div>
+    <span th:if="${loggedInUser != null}">
+        Logged in as: <span th:text="${loggedInUser}"></span>
+        <span th:if="${userRole == 'ROLE_ADMIN'}"> (ADMIN) </span>
+        <a th:href="@{/logout}">Logout</a>
+    </span>
+</div>
 <table>
     <thead>
     <tr>

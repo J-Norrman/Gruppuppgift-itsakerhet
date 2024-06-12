@@ -10,13 +10,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
@@ -24,7 +21,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Autowired
-    private AppUserService appUserService;
+    private UserService userService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -44,7 +41,8 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/login", "/users").permitAll()
-                        .requestMatchers("/register","/edit**").hasRole("ADMIN")
+                        .requestMatchers("/register","/edit/**","/delete/**").hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin
@@ -54,7 +52,9 @@ public class SecurityConfig {
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login")
+
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
                         .permitAll()
                 );
         return http.build();
@@ -62,7 +62,7 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return email -> {
-            AppUser appUser = appUserService.getUserByEmail(email);
+            AppUser appUser = userService.getUserByEmail(email);
             if (appUser == null) {
                 throw new UsernameNotFoundException("User not found");
             }

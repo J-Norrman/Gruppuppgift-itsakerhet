@@ -21,10 +21,10 @@ public class AppUser implements Serializable {
     @Column(nullable = false)
     private String lastName;
     @Column(nullable = false)
-    private String age;
+    private Integer age;
 
 
-    public AppUser(Long id, String email, String password, String role, String firstName, String lastName, String age) {
+    public AppUser(Long id, String email, String password, String role, String firstName, String lastName, Integer age) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -87,11 +87,11 @@ public class AppUser implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 }

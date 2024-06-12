@@ -1,13 +1,29 @@
 package com.joel.gruppuppgiftitsakerhet.model;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 public class UserDTO {
     private Long id;
+    @NotEmpty(message = "Email is required")
+    @Email(message = "Email should be valid")
     private String email;
+
+    @NotEmpty(message = "Password is required")
     private String password;
-    private String role;
+
+    @NotEmpty(message = "First name is required")
     private String firstName;
+
+    @NotEmpty(message = "Last name is required")
     private String lastName;
-    private String age;
+
+    @NotNull(message = "Age is required")
+    private Integer age;
+
+    @NotEmpty(message = "Role is required")
+    private String role;
 
     public String getEmail() {
         return email;
@@ -49,11 +65,11 @@ public class UserDTO {
         this.lastName = lastName;
     }
 
-    public String getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 

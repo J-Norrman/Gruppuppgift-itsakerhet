@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -102,18 +103,26 @@ public class AppController {
     }
 
     @PostMapping("/edit/{id}")
-    public String updateUser(@PathVariable Long id, @ModelAttribute("user") @Valid UserDTO userDTO, BindingResult bindingResult, Model model) {
+    public String updateUser(@PathVariable Long id, @ModelAttribute("user") @Valid UserDTO userDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("user", userDTO);
-            return "edit"; // return to the edit form if validation fails
+            return "edit";
         }
-        AppUser user = userService.convertToEntity(userDTO);
-        logger.debug("Uppdaterar användare med ID: " + id);
-        user.setId(id);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userService.saveUser(user);
-        logger.info("Användare uppdaterad med ID: " + id);
-        return "redirect:/users";
+        try {
+            AppUser user = userService.convertToEntity(userDTO);
+            logger.debug("Uppdaterar användare med ID: " + id);
+            user.setId(id);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userService.saveUser(user);
+            logger.info("Användare uppdaterad med ID: " + id);
+            redirectAttributes.addFlashAttribute("successMessage", "Användare uppdaterad med ID: " + id);
+            return "redirect:/users";
+        } catch (Exception e) {
+            logger.error("Fel vid uppdatering av användare med ID: " + id, e);
+            model.addAttribute("errorMessage", "Kunde inte uppdatera användare med ID: " + id);
+            model.addAttribute("user", userDTO);
+            return "edit";
+        }
     }
     @GetMapping("/delete/{id}")
     public String deleteUser(@PathVariable Long id, Model model) {
@@ -126,6 +135,7 @@ public class AppController {
         }
         if ("ADMIN".equals(userToDelete.getRole())) {
             logger.warn("Försöker ta bort en administratör: " + id);
+            logger.warn(userToDelete.getRole()+" Kan inte tas bort");
             model.addAttribute("error", "Cannot delete an admin user");
             return "redirect:/users";
         }

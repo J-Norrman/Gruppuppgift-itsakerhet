@@ -47,10 +47,12 @@ public class SecurityConfig {
                         .requestMatchers("/register","/edit/**","/delete/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .formLogin(formLogin -> formLogin
-                        //.loginPage("/login")
-                        .defaultSuccessUrl("/users",true)
-                        .permitAll()
+                .formLogin(formLogin ->
+                        formLogin
+                                .loginPage("/login")
+                                .permitAll()
+                                .defaultSuccessUrl("/users", true)
+                                .failureUrl("/login?error")
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")

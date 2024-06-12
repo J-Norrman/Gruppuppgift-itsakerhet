@@ -4,6 +4,7 @@ import com.joel.gruppuppgiftitsakerhet.model.UserDTO;
 import com.joel.gruppuppgiftitsakerhet.service.UserService;
 import com.joel.gruppuppgiftitsakerhet.util.MaskingUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -100,7 +102,11 @@ public class AppController {
     }
 
     @PostMapping("/edit/{id}")
-    public String updateUser(@PathVariable Long id, @ModelAttribute("user") UserDTO userDTO) {
+    public String updateUser(@PathVariable Long id, @ModelAttribute("user") @Valid UserDTO userDTO, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", userDTO);
+            return "edit"; // return to the edit form if validation fails
+        }
         AppUser user = userService.convertToEntity(userDTO);
         logger.debug("Uppdaterar användare med ID: " + id);
         user.setId(id);
@@ -109,15 +115,25 @@ public class AppController {
         logger.info("Användare uppdaterad med ID: " + id);
         return "redirect:/users";
     }
-
     @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable Long id) {
+    public String deleteUser(@PathVariable Long id, Model model) {
         logger.debug("Försöker ta bort användare med ID: " + id);
+        AppUser userToDelete = userService.getUserById(id);
+        if (userToDelete == null) {
+            logger.warn("Användare med ID: " + id + " kunde inte hittas");
+            model.addAttribute("error", "User not found");
+            return "redirect:/users";
+        }
+        if ("ADMIN".equals(userToDelete.getRole())) {
+            logger.warn("Försöker ta bort en administratör: " + id);
+            model.addAttribute("error", "Cannot delete an admin user");
+            return "redirect:/users";
+        }
         try {
             userService.deleteUser(id);
             logger.info("Användare borttagen med ID: " + id);
         } catch (Exception e) {
-            logger.warn("Användare med ID: " + id + " kunde inte hittas", e);
+            logger.warn("Användare med ID: " + id + " kunde inte tas bort", e);
         }
         return "redirect:/users";
     }

@@ -99,7 +99,7 @@ public class AppController {
         return "edit";
     }
 
-    @PostMapping("/update/{id}")
+    @PostMapping("/edit/{id}")
     public String updateUser(@PathVariable Long id, @ModelAttribute("user") UserDTO userDTO) {
         AppUser user = userService.convertToEntity(userDTO);
         logger.debug("Uppdaterar användare med ID: " + id);

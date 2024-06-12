@@ -3,6 +3,7 @@ import com.joel.gruppuppgiftitsakerhet.model.AppUser;
 import com.joel.gruppuppgiftitsakerhet.model.UserDTO;
 import com.joel.gruppuppgiftitsakerhet.service.UserService;
 import com.joel.gruppuppgiftitsakerhet.util.MaskingUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +38,19 @@ public class AppController {
         return "redirect:/login";
     }
 
-    @GetMapping("/login")
-    public String login() {
-        logger.debug("Visar loginformulär");
-        return "login";
+//    @GetMapping("/login")
+//    public String login() {
+//        logger.debug("Visar loginformulär");
+//        return "login";
+//    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        logger.debug("Användare är utloggad");
+        SecurityContextHolder.clearContext();
+        return "redirect:/login?logout";
     }
+
 
     @GetMapping("/users")
     public String getAllUsers(Model model) {

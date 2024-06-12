@@ -64,28 +64,9 @@ public class SecurityConfig {
             return org.springframework.security.core.userdetails.User.builder()
                     .username(appUser.getEmail())
                     .password(appUser.getPassword())
-                    .roles(appUser.getRole().replace("ROLE_", ""))
+                    .roles(appUser.getRole())
                     .build();
         };
     }
-//    @Bean
-//    public InMemoryUserDetailsManager userDetailsService() {
-//        InMemoryUserDetailsManager userDetailsService = new InMemoryUserDetailsManager();
-//
-//        UserDetails user = User.builder()
-//                .username("user")
-//                .password(passwordEncoder().encode("password"))
-//                .roles("USER")
-//                .build();
-//        userDetailsService.createUser(user);
-//
-//        UserDetails admin = User.builder()
-//                .username("admin")
-//                .password(passwordEncoder().encode("password"))
-//                .roles("ADMIN")
-//                .build();
-//        userDetailsService.createUser(admin);
-//
-//        return userDetailsService;
-//    }
+
 }

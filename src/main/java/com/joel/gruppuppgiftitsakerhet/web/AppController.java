@@ -63,6 +63,7 @@ public class AppController {
         }
         return "users";
     }
+
     @GetMapping("/register")
     public String showCreateForm(Model model) {
         logger.debug("Visar registreringsformulär");
@@ -111,6 +112,4 @@ public class AppController {
         }
         return "redirect:/users";
     }
-
-
 }

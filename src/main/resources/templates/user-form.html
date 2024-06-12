@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Register</title>
+    <title>Edit User</title>
 </head>
 <body>
-<h1>Register</h1>
-<form th:action="@{/register}" th:object="${user}" method="post">
+<h1>Edit User</h1>
+<form th:action="@{'/users/update/' + ${user.id}}" th:object="${user}" method="post">
     <div>
         <label for="email">Email:</label>
         <input type="text" id="email" th:field="*{email}" />
@@ -21,19 +21,6 @@
             <option value="ADMIN">ADMIN</option>
         </select>
     </div>
-    <div>
-        <label for="firstname">First Name:</label>
-        <input type="text" id="firstname" th:field="*{firstName}" />
-    </div>
-    <div>
-        <label for="lastname">Last name:</label>
-        <input type="text" id="lastname" th:field="*{lastName}" />
-    </div>
-    <div>
-        <label for="age">Age:</label>
-        <input type="text" id="age" th:field="*{age}" />
-    </div>
-
     <div>
         <button type="submit">Save</button>
     </div>

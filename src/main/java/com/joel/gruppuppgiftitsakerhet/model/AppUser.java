@@ -16,12 +16,23 @@ public class AppUser implements Serializable {
     private String password;
     @Column(nullable = false)
     private String role;
+    @Column(nullable = false)
+    private String firstName;
+    @Column(nullable = false)
+    private String lastName;
+    @Column(nullable = false)
+    private String age;
 
-    public AppUser(Long id, String email, String password, String role) {
+
+    public AppUser(Long id, String email, String password, String role, String firstName, String lastName, String age) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+
     }
 
     public AppUser() {
@@ -58,5 +69,29 @@ public class AppUser implements Serializable {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
     }
 }

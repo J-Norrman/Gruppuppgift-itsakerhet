@@ -60,7 +60,7 @@ public class AppController {
         logger.debug("Visar redigeringsformulär för användare med ID: " + id);
         AppUser user = appUserService.getUserById(id);
         model.addAttribute("user", user);
-        return "user-form";
+        return "edit";
     }
 
     @PostMapping("/update/{id}")

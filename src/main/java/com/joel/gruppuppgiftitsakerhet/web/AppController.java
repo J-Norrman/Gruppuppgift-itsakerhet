@@ -124,7 +124,6 @@ public class AppController {
         userDTO.setFirstName(user.getFirstName());
         userDTO.setLastName(user.getLastName());
         userDTO.setAge(user.getAge());
-
         return userDTO;
     }
 

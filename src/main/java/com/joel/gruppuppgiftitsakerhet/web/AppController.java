@@ -47,7 +47,7 @@ public class AppController {
     public String showEditForm(@PathVariable Long id, Model model) {
         AppUser user = appUserService.getUserById(id);
         model.addAttribute("user", user);
-        return "user-form";
+        return "edit";
     }
 
     @PostMapping("/update/{id}")

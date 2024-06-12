@@ -5,26 +5,47 @@
 </head>
 <body>
 <h1>Edit User</h1>
+
+<div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
 <form th:action="@{'/edit/' + ${user.id}}" th:object="${user}" method="post">
+    <div th:if="${#fields.hasErrors('email')}" class="error">
+        <p th:errors="*{email}"></p>
+    </div>
     <div>
         <label for="email">Email:</label>
         <input type="text" id="email" th:field="*{email}" />
+    </div>
+    <div th:if="${#fields.hasErrors('password')}" class="error">
+        <p th:errors="*{password}"></p>
     </div>
     <div>
         <label for="password">Password:</label>
         <input type="password" id="password" th:field="*{password}" />
     </div>
+    <div th:if="${#fields.hasErrors('firstName')}" class="error">
+        <p th:errors="*{firstName}"></p>
+    </div>
     <div>
         <label for="firstName">First Name:</label>
         <input type="text" id="firstName" th:field="*{firstName}" />
+    </div>
+    <div th:if="${#fields.hasErrors('lastName')}" class="error">
+        <p th:errors="*{lastName}"></p>
     </div>
     <div>
         <label for="lastName">Last Name:</label>
         <input type="text" id="lastName" th:field="*{lastName}" />
     </div>
+    <div th:if="${#fields.hasErrors('age')}" class="error">
+        <p th:errors="*{age}"></p>
+    </div>
     <div>
         <label for="age">Age:</label>
         <input type="text" id="age" th:field="*{age}" />
+    </div>
+    <div th:if="${#fields.hasErrors('role')}" class="error">
+        <p th:errors="*{role}"></p>
     </div>
     <div>
         <label for="role">Role:</label>

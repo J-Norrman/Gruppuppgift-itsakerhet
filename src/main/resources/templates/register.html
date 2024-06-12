@@ -15,13 +15,6 @@
         <input type="password" id="password" th:field="*{password}" />
     </div>
     <div>
-        <label for="role">Role:</label>
-        <select id="role" th:field="*{role}">
-            <option value="USER">USER</option>
-            <option value="ADMIN">ADMIN</option>
-        </select>
-    </div>
-    <div>
         <label for="firstname">First Name:</label>
         <input type="text" id="firstname" th:field="*{firstName}" />
     </div>
@@ -33,6 +26,14 @@
         <label for="age">Age:</label>
         <input type="text" id="age" th:field="*{age}" />
     </div>
+    <div>
+        <label for="role">Role:</label>
+        <select id="role" th:field="*{role}">
+            <option value="USER">USER</option>
+            <option value="ADMIN">ADMIN</option>
+        </select>
+    </div>
+
 
     <div>
         <button type="submit">Save</button>

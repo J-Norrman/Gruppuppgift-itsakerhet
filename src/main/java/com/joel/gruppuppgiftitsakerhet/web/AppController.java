@@ -43,6 +43,13 @@ public class AppController {
         return "login";
     }
 
+    @GetMapping("/logout")
+    public String logout() {
+        logger.debug("Användare är utloggad");
+        return "logout";
+    }
+
+
     @GetMapping("/users")
     public String getAllUsers(Model model) {
         logger.debug("Hämtar alla användare");
@@ -63,6 +70,7 @@ public class AppController {
         }
         return "users";
     }
+
     @GetMapping("/register")
     public String showCreateForm(Model model) {
         logger.debug("Visar registreringsformulär");
@@ -111,6 +119,4 @@ public class AppController {
         }
         return "redirect:/users";
     }
-
-
 }

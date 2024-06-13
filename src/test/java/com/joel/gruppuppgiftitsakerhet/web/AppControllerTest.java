@@ -71,7 +71,7 @@ class AppControllerTest {
     @Order(3)
     @WithMockUser(roles = "ADMIN")
     void updateUserTest() throws Exception {
-        long userId = 1L;
+        int userId = 1;
         String updatedEmail = "updateduser@example.com";
 
         logger.info("Starting updateUserTest for user ID: {}", userId);
@@ -127,7 +127,7 @@ class AppControllerTest {
     @Order(4)
     @WithMockUser(roles = "ADMIN")
     public void deleteUserTest() throws Exception {
-        long userId = 1L;
+        int userId = 1;
         String userEmail = "user@example.com";
 
         logger.info("Starting deleteUserTest for user ID: {}", userId);
@@ -149,7 +149,7 @@ class AppControllerTest {
     @Order(6)
     @WithMockUser(roles = "ADMIN")
     void deleteAdminFailTest() throws Exception {
-        long adminUserId = 2L;
+        int adminUserId = 2;
         logger.info("Starting deleteAdminFailTest with admin user ID: {}", adminUserId);
 
         mvc.perform(get("/delete/" + adminUserId).with(csrf()))

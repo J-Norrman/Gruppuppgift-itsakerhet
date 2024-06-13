@@ -1,7 +1,8 @@
 package com.joel.gruppuppgiftitsakerhet.web;
 
+import jakarta.transaction.Transactional;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class AppControllerTest {
 
     private static final Logger logger = LoggerFactory.getLogger(AppControllerTest.class);
@@ -29,6 +31,7 @@ class AppControllerTest {
     private MockMvc mvc;
 
     @Test
+    @Order(1)
     void loginTest() throws Exception {
         String email = "admin@example.com";
         String password = "password";
@@ -46,6 +49,7 @@ class AppControllerTest {
         }
     }
     @Test
+    @Order(2)
     void loginFailTest() throws Exception {
         String email = "notregistereduser@example.com";
         String password = "notregisteredpassword";
@@ -64,23 +68,7 @@ class AppControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
-    void createUserTest() throws Exception {
-        mvc.perform(post("/register").with(csrf())
-                .param("email", "newuser@example.com")
-                .param("password", "password")
-                .param("firstName", "New")
-                .param("lastName", "User")
-                .param("age", "25")
-                .param("role", "USER"))
-            .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/users"));
-        mvc.perform(get("/users"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(Matchers.containsString("newuser@example.com")));
-    }
-
-    @Test
+    @Order(3)
     @WithMockUser(roles = "ADMIN")
     void updateUserTest() throws Exception {
         mvc.perform(post("/edit/1").with(csrf())
@@ -97,7 +85,27 @@ class AppControllerTest {
                 .andExpect(content().string(Matchers.containsString("updateduser@example.com")));
     }
 
+
     @Test
+    @Order(5)
+    @WithMockUser(roles = "ADMIN")
+    void createUserTest() throws Exception {
+        mvc.perform(post("/register").with(csrf())
+                        .param("email", "newuser@example.com")
+                        .param("password", "password")
+                        .param("firstName", "New")
+                        .param("lastName", "User")
+                        .param("age", "25")
+                        .param("role", "USER"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/users"));
+        mvc.perform(get("/users"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(Matchers.containsString("newuser@example.com")));
+    }
+
+    @Test
+    @Order(4)
     @WithMockUser(roles = "ADMIN")
     public void deleteUserTest() throws Exception {
         mvc.perform(get("/delete/1").with(csrf()))

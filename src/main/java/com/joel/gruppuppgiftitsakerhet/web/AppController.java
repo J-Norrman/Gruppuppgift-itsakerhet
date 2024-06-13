@@ -41,11 +41,11 @@ public class AppController {
         return "redirect:/login";
     }
 
-//    @GetMapping("/login")
-//    public String login() {
-//        logger.debug("Visar loginformulär");
-//        return "login";
-//    }
+    @GetMapping("/login")
+    public String login() {
+        logger.debug("Visar loginformulär");
+        return "login";
+    }
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {

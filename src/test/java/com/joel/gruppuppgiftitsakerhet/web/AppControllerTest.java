@@ -71,18 +71,28 @@ class AppControllerTest {
     @Order(3)
     @WithMockUser(roles = "ADMIN")
     void updateUserTest() throws Exception {
-        mvc.perform(post("/edit/1").with(csrf())
-                .param("email", "updateduser@example.com")
-                .param("password","password123")
-                .param("firstName", "Updated")
-                .param("lastName", "User")
-                .param("age", "26")
-                .param("role", "USER"))
-            .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/users"));
+        long userId = 1L;
+        String updatedEmail = "updateduser@example.com";
+
+        logger.info("Starting updateUserTest for user ID: {}", userId);
+
+        mvc.perform(post("/edit/" + userId).with(csrf())
+                        .param("email", updatedEmail)
+                        .param("password", "password123")
+                        .param("firstName", "Updated")
+                        .param("lastName", "User")
+                        .param("age", "26")
+                        .param("role", "USER"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/users"));
+
+        logger.info("User updated successfully for user ID: {}. Verifying update...", userId);
+
         mvc.perform(get("/users"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(Matchers.containsString("updateduser@example.com")));
+                .andExpect(content().string(Matchers.containsString(updatedEmail)));
+
+        logger.info("updateUserTest completed successfully for user ID: {}", userId);
     }
 
 
@@ -90,8 +100,12 @@ class AppControllerTest {
     @Order(5)
     @WithMockUser(roles = "ADMIN")
     void createUserTest() throws Exception {
+        String newEmail = "newuser@example.com";
+
+        logger.info("Starting createUserTest with email: {}", newEmail);
+
         mvc.perform(post("/register").with(csrf())
-                        .param("email", "newuser@example.com")
+                        .param("email", newEmail)
                         .param("password", "password")
                         .param("firstName", "New")
                         .param("lastName", "User")
@@ -99,20 +113,51 @@ class AppControllerTest {
                         .param("role", "USER"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/users"));
+
+        logger.info("User created successfully with email: {}. Verifying creation...", newEmail);
+
         mvc.perform(get("/users"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(Matchers.containsString("newuser@example.com")));
+                .andExpect(content().string(Matchers.containsString(newEmail)));
+
+        logger.info("createUserTest completed successfully for email: {}", newEmail);
     }
 
     @Test
     @Order(4)
     @WithMockUser(roles = "ADMIN")
     public void deleteUserTest() throws Exception {
-        mvc.perform(get("/delete/1").with(csrf()))
+        long userId = 1L;
+        String userEmail = "user@example.com";
+
+        logger.info("Starting deleteUserTest for user ID: {}", userId);
+
+        mvc.perform(get("/delete/" + userId).with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/users"));
+
+        logger.info("User deleted successfully for user ID: {}. Verifying deletion...", userId);
+
         mvc.perform(get("/users"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(Matchers.not(Matchers.containsString("user@example.com"))));
+                .andExpect(content().string(Matchers.not(Matchers.containsString(userEmail))));
+
+        logger.info("deleteUserTest completed successfully for user ID: {}", userId);
     }
+
+    @Test
+    @Order(6)
+    @WithMockUser(roles = "ADMIN")
+    void deleteAdminFailTest() throws Exception {
+        long adminUserId = 2L;
+        logger.info("Starting deleteAdminFailTest with admin user ID: {}", adminUserId);
+
+        mvc.perform(get("/delete/" + adminUserId).with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/users"))
+                .andExpect(flash().attribute("error", "Cannot delete an admin user"));
+
+        logger.info("deleteAdminFailTest completed successfully for admin user ID: {}", adminUserId);
+    }
+
 }

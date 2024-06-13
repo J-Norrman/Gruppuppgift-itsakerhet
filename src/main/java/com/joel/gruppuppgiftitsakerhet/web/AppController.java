@@ -124,19 +124,19 @@ public class AppController {
             return "edit";
         }
     }
+
     @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable Long id, Model model) {
+    public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         logger.debug("Försöker ta bort användare med ID: " + id);
         AppUser userToDelete = userService.getUserById(id);
         if (userToDelete == null) {
             logger.warn("Användare med ID: " + id + " kunde inte hittas");
-            model.addAttribute("error", "User not found");
+            redirectAttributes.addFlashAttribute("error", "User not found");
             return "redirect:/users";
         }
         if ("ADMIN".equals(userToDelete.getRole())) {
             logger.warn("Försöker ta bort en administratör: " + id);
-            logger.warn(userToDelete.getRole()+" Kan inte tas bort");
-            model.addAttribute("error", "Cannot delete an admin user");
+            redirectAttributes.addFlashAttribute("error", "Cannot delete an admin user");
             return "redirect:/users";
         }
         try {
@@ -144,6 +144,7 @@ public class AppController {
             logger.info("Användare borttagen med ID: " + id);
         } catch (Exception e) {
             logger.warn("Användare med ID: " + id + " kunde inte tas bort", e);
+            redirectAttributes.addFlashAttribute("error", "User could not be deleted.");
         }
         return "redirect:/users";
     }

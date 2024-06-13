@@ -7,6 +7,9 @@
 </head>
 <body style="padding: 80px">
 <h1>User List</h1>
+<div th:if="${error}">
+    <p th:text="${error}" style="color: red;"></p>
+</div>
 <div>
     <span th:if="${loggedInUser != null}">
         Logged in as: <span th:text="${loggedInUser}"></span>
@@ -36,12 +39,12 @@
         <td th:text="${user.firstName}" style="padding-right: 7px" ></td>
         <td th:text="${user.lastName}" style="padding-right: 7px" ></td>
         <td th:text="${user.age}" style="padding-right: 7px" ></td>
-        <div sec:authorize="hasRole('ROLE_ADMIN')">
-            <td>
-                <a th:href="@{/edit/{id}(id=${user.id})}">Edit</a> |
+        <td>
+            <div sec:authorize="hasRole('ROLE_ADMIN')">
+                <a th:href="@{/edit/{id}(id=${user.id})}">Edit</a>
                 <a th:href="@{/delete/{id}(id=${user.id})}">Delete</a>
-            </td>
-        </div>
+            </div>
+        </td>
 
     </tr>
     </tbody>

@@ -35,9 +35,9 @@
     </div>
 
 
-    <div>
-        <button type="submit">Save</button>
-    </div>
+    <form th:action="@{/users}">
+        <button type="submit" style="margin-top: 15px; background: transparent; border: 2px solid blue;">Save</button>
+    </form>
 </form>
 <a th:href="@{/users}">Back to User List</a>
 </body>

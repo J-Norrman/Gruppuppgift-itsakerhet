@@ -4,6 +4,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
+//Instansen av user som får sina värden från det som är sparat i databasen och visas upp i de olika endpoints vi har
+//Error meddelande till alla variabler för att förhindra registrering och redigering med tomma fält.
 public class UserDTO {
     private Long id;
     @NotEmpty(message = "Email is required")

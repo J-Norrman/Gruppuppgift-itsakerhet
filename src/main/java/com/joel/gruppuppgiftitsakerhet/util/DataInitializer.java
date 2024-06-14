@@ -11,6 +11,10 @@ import com.joel.gruppuppgiftitsakerhet.repository.UserRepository;
 
 @Configuration
 
+//DataInitializer skapar och sparar två användare när applikationen startar.
+//Detta är främst för utvecklingssyfte, så att vi har en användare och en admin att logga in som.
+//Denna metod bör inte användas i en produktionsmiljö.
+
 public class DataInitializer {
 
     @Autowired

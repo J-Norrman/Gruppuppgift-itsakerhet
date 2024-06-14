@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 
+//AppUser är det instans av användaren vi använder i databasen. Id är autoincrement och annoteras med id.
+//De andra variablerna annoteras med columns som inte är nullable (kan inte vara null) och email är unik
+
 @Entity
 @Table(name="users")
 public class AppUser implements Serializable {

@@ -5,6 +5,15 @@ public class MaskingUtils {
     /**
      * Kollar om email är godkänd
      * Gör en email anonym, geom att bara visa första och sista bokstaven av namndelen, allt emellan blir *
+     * Detta är användbart i scenarier där det inte är lämpligt att visa hela e-postadressen,
+     * till exempel i loggar eller felmeddelanden.
+     * Huvudmetoden, anonymize, tar en e-postadress som input och returnerar en maskerad version
+     * där endast den första och sista bokstaven i användarnamnsdelen är synliga, och alla andra
+     * tecken ersätts med asterisker (*). Domändelen av e-postadressen förblir oförändrad.
+
+     * Exempel:
+     * Input: "exempel@exempel.com"
+     * Output: "e*****l@exempel.com"
      */
     public static String anonymize(String email) {
         if (email == null || !email.contains("@")) {

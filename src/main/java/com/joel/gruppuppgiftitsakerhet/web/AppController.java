@@ -22,6 +22,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * AppController hanterar webbrelaterade förfrågningar och funktionalitet för användarhantering.
+
+ * Denna controller inkluderar hantering av inloggning, utloggning, visning av användarlistor,
+ * registrering av nya användare, redigering av befintliga användare och borttagning av användare.
+
+ * Logger används för att logga information om operationer och deras resultat.
+ */
+
 
 @Controller
 @RequestMapping("/")

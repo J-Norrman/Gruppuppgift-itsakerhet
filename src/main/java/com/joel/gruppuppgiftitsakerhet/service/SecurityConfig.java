@@ -17,6 +17,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
+
+//SecurityConfig hanterar säkerhetskonfigurationen för applikationen.
+//Det definierar lösenordskodning, säkerhetsfilter, CSRF-skydd,
+//autentisering och auktorisering av användare.
+//Användarens detaljer hämtas genom UserDetailsService med hjälp av en builder för att skapa UserDetails-objekt.
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {

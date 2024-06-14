@@ -8,6 +8,10 @@ import com.joel.gruppuppgiftitsakerhet.repository.UserRepository;
 
 import java.util.List;
 
+//Användarservice för hantering av användare.
+//Innehåller metoder för att konvertera mellan userDTO och AppUser, detta görs för att skydda data vi visar upp.
+//CRUD funktionalitet för databasen.
+
 @Service
 public class UserService {
     @Autowired

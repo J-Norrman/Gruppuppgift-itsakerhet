@@ -97,13 +97,24 @@ public class AppController {
     }
 
     @PostMapping("/register")
-    public String createUser(@ModelAttribute("user") UserDTO userDTO) {
-        logger.debug("Registrerar användare med e-post: " + MaskingUtils.anonymize(userDTO.getEmail()));
-        AppUser user = userService.convertToEntity(userDTO);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userService.saveUser(user);
-        logger.info("Användare registrerad: " + MaskingUtils.anonymize(user.getEmail()));
-        return "redirect:/users";
+    public String createUser(@ModelAttribute("user") @Valid UserDTO userDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", userDTO);
+            return "register";
+        }
+        try {
+            AppUser user = userService.convertToEntity(userDTO);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userService.saveUser(user);
+            logger.info("Användare registrerad: " + MaskingUtils.anonymize(user.getEmail()));
+            redirectAttributes.addFlashAttribute("successMessage", "Användare registrerad: " + MaskingUtils.anonymize(user.getEmail()));
+            return "redirect:/users";
+        } catch (Exception e) {
+            logger.error("Fel vid registrering av användare: " + MaskingUtils.anonymize(userDTO.getEmail()), e);
+            model.addAttribute("errorMessage", "Kunde inte registrera användare: " + MaskingUtils.anonymize(userDTO.getEmail()));
+            model.addAttribute("user", userDTO);
+            return "register";
+        }
     }
 
     @GetMapping("/edit/{id}")

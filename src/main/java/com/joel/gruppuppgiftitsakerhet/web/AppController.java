@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.ProviderNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -17,7 +19,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -93,13 +97,24 @@ public class AppController {
     }
 
     @PostMapping("/register")
-    public String createUser(@ModelAttribute("user") UserDTO userDTO) {
-        logger.debug("Registrerar användare med e-post: " + MaskingUtils.anonymize(userDTO.getEmail()));
-        AppUser user = userService.convertToEntity(userDTO);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userService.saveUser(user);
-        logger.info("Användare registrerad: " + MaskingUtils.anonymize(user.getEmail()));
-        return "redirect:/users";
+    public String createUser(@ModelAttribute("user") @Valid UserDTO userDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", userDTO);
+            return "register";
+        }
+        try {
+            AppUser user = userService.convertToEntity(userDTO);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userService.saveUser(user);
+            logger.info("Användare registrerad: " + MaskingUtils.anonymize(user.getEmail()));
+            redirectAttributes.addFlashAttribute("successMessage", "Användare registrerad: " + MaskingUtils.anonymize(user.getEmail()));
+            return "redirect:/users";
+        } catch (Exception e) {
+            logger.error("Fel vid registrering av användare: " + MaskingUtils.anonymize(userDTO.getEmail()), e);
+            model.addAttribute("errorMessage", "Kunde inte registrera användare: " + MaskingUtils.anonymize(userDTO.getEmail()));
+            model.addAttribute("user", userDTO);
+            return "register";
+        }
     }
 
     @GetMapping("/edit/{id}")
@@ -156,4 +171,12 @@ public class AppController {
         }
         return "redirect:/users";
     }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @GetMapping("/unauthorized")
+    public String handleAccessDeniedException() {
+        return "unauthorized";
+    }
+
+
 }

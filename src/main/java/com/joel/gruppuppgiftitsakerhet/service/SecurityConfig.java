@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 
 //SecurityConfig hanterar säkerhetskonfigurationen för applikationen.
@@ -64,6 +65,10 @@ public class SecurityConfig {
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .permitAll()
+                )
+                .exceptionHandling(exception -> exception
+                        .accessDeniedHandler((request, response, accessDeniedException) -> response.sendRedirect("/unauthorized"))
+                        //.authenticationEntryPoint((request, response, authException) -> response.sendRedirect("/notfound"))
                 );
         return http.build();
     }

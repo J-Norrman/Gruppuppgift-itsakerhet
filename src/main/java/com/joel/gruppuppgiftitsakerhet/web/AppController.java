@@ -110,7 +110,6 @@ public class AppController {
         model.addAttribute("user", userDTO);
         return "edit";
     }
-
     @PostMapping("/edit/{id}")
     public String updateUser(@PathVariable Long id, @ModelAttribute("user") @Valid UserDTO userDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         if (bindingResult.hasErrors()) {

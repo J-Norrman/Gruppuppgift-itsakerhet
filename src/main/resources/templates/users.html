@@ -41,8 +41,12 @@
         <td th:text="${user.age}" style="padding-right: 7px" ></td>
         <td>
             <div sec:authorize="hasRole('ROLE_ADMIN')">
-                <a th:href="@{/edit/{id}(id=${user.id})}">Edit</a>
-                <a th:href="@{/delete/{id}(id=${user.id})}">Delete</a>
+                <form th:action="@{/edit/{id}(id=${user.id})}" style="display: inline;">
+                    <button type="submit" style="background: transparent; border: 2px solid blue; cursor: pointer;">Edit</button>
+                </form>
+                <form th:action="@{/delete/{id}(id=${user.id})}" style="display: inline;">
+                    <button type="submit" style="background: transparent; border: 2px solid blue; cursor: pointer;">Delete</button>
+                </form>
             </div>
         </td>
 
@@ -51,13 +55,13 @@
 </table>
 <div sec:authorize="hasRole('ROLE_ADMIN')">
     <form th:action="@{/register}">
-        <button type="submit" style="margin-top: 15px; background: transparent; border: 2px solid blue;">Create New User</button>
+        <button type="submit" style="margin-top: 15px; background: transparent; border: 2px solid blue;cursor: pointer;">Create New User</button>
     </form>
 </div>
 
 <div>
     <form th:action="@{/logout}" method="post">
-        <button type="submit" style="margin-top: 15px; background: transparent; border: 2px solid blue;">Logout</button>
+        <button type="submit" style="margin-top: 15px; background: transparent; border: 2px solid blue;cursor: pointer;">Logout</button>
     </form>
 </div>
 </body>

@@ -20,4 +20,10 @@
     <logger name="com.joel.gruppuppgiftitsakerhet" level="debug" additivity="false">
         <appender-ref ref="FILE" />
     </logger>
+
+    <logger name="org.hibernate" level="WARN"/>
+    <logger name="org.thymeleaf" level="WARN"/>
+    <logger name="com.zaxxer.hikari" level="WARN"/>
+    <logger name="org.springframework" level="INFO"/>
+
 </configuration>
